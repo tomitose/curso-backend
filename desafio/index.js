@@ -1,18 +1,16 @@
-import fs from "fs";
-import util from "util";
+const fs = require("fs");
+const util = require("util");
 
-
-const app = fs;
-const writeFileAsync = util.promisify(app.promises.writeFile);
+const writeFileAsync = util.promisify(fs.writeFile);
 const PATH = "./files/Usuarios.json";
 
 class ProductManager {
   constructor() {
     this.products = [];
-    this.path = PATH; 
+    this.path = PATH;
   }
 
-  //Obtener productos
+  // Obtener productos
   async getProducts() {
     try {
       const data = await fs.promises.readFile(this.path, "utf-8");
@@ -27,13 +25,13 @@ class ProductManager {
     }
   }
 
-  //Agregar producto
+  // Agregar producto
   async addProduct(title, description, price, thumbnail, code, stock) {
     if (!title || !description || !price || !thumbnail || !code || !stock) {
       console.log("Falta agregar un campo");
       return;
     }
-  
+
     if (this.products.some((product) => product.code === code)) {
       console.log("El código del producto ya existe");
     } else {
@@ -49,7 +47,7 @@ class ProductManager {
       this.products.push(product);
       const data = { products: this.products };
       try {
-        await app.promises.writeFile(
+        await writeFileAsync(
           this.path,
           JSON.stringify(data.products),
           "utf-8"
@@ -61,36 +59,36 @@ class ProductManager {
     }
   }
 
-  //obtener producto por ID
+  // Obtener producto por ID
   async getProductById(id) {
     const products = await this.getProducts();
-    const productId = products.find((product) => product.id === id);
-    if (!productId) {
+    const product = products.find((product) => product.id === id);
+    if (!product) {
       console.log("Producto no encontrado");
+      return null;
     } else {
-      console.log(`El id del producto es: `, productId.id);
+      console.log(`El id del producto es: `, product.id);
+      return product;
     }
   }
 
   // Actualizar producto
   async updateProduct(id, newProductData) {
     const products = await this.getProducts();
-  
-    const productIndex = products.findIndex(
-      (product) => product.id === id
-    );
-  
+
+    const productIndex = products.findIndex((product) => product.id === id);
+
     if (productIndex === -1) {
       console.log("Producto no encontrado");
       return;
     }
-  
+
     const updatedProduct = {
       ...products[productIndex],
       ...newProductData,
     };
     products[productIndex] = updatedProduct;
-  
+
     try {
       await writeFileAsync(this.path, JSON.stringify(products), "utf-8");
       console.log("Producto actualizado correctamente");
@@ -104,57 +102,55 @@ class ProductManager {
     try {
       const products = await this.getProducts();
       const productIndex = products.findIndex((product) => product.id === id);
-  
+
       if (productIndex === -1) {
         console.log("Producto no encontrado");
         return;
       }
-  
+
       products.splice(productIndex, 1);
-  
-      await app.promises.writeFile(this.path, JSON.stringify(products), "utf-8");
+
+      await writeFileAsync(this.path, JSON.stringify(products), "utf-8");
       console.log("Producto eliminado correctamente");
     } catch (error) {
       console.log("Error al eliminar producto:", error);
     }
   }
+
+  // Inicialización: agregar productos
+  async init() {
+    const existingProducts = await this.getProducts();
+    if (existingProducts.length === 0) {
+      // Agregar los productos aquí si el archivo está vacío
+      this.addProduct(
+        "producto 1",
+        "Este es un producto 1",
+        200,
+        "Sin imagen",
+        1,
+        25
+      );
+      this.addProduct(
+        "producto 2",
+        "Este es un producto 2",
+        300,
+        "Sin imagen",
+        2,
+        30
+      );
+      this.addProduct(
+        "producto 3",
+        "Este es un producto 3",
+        300,
+        "Sin imagen",
+        3,
+        30
+      );
+    } else {
+      // Mostrar los productos existentes si el archivo ya los contiene
+      console.log("Productos existentes:", existingProducts);
+    }
+  }
 }
 
-//se agregan 3 productos
-const productManager = new ProductManager();
-productManager.addProduct(
-  "producto 1",
-  "Este es un producto 1",
-  200,
-  "Sin imagen",
-  1,
-  25
-);
-productManager.addProduct(
-  "producto 2",
-  "Este es un producto 2",
-  300,
-  "Sin imagen",
-  2,
-  30
-);
-productManager.addProduct(
-  "producto 3",
-  "Este es un producto 3",
-  300,
-  "Sin imagen",
-  3,
-  30
-);
-
-//Busco todos los productos
-console.log(productManager.getProducts());
-
-//Busco el producto con el ID:2
-// console.log(productManager.getProductById(2));
-
-//Actualizo el producto que quiero
-// console.log(productManager.updateProduct(2,{title:"producto 2 modificado",stock:60}))
-
-//Elimino el producto con el ID que pongo
-// console.log(productManager.deleteProduct(3))
+module.exports = ProductManager;

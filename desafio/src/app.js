@@ -1,60 +1,68 @@
-//npm start para iniciar nodemon
-
-import express from "express";
-import fs from "fs";
+const express = require("express");
+const fs = require("fs");
+const ProductManager = require("../index.js");
 
 const app = express();
-const port = 5000;
+const port = 8080;
+const productManager = new ProductManager();
+productManager.init();
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-app.use(express.urlencoded({extended:true}))
-
-//Llamo a todos los productos 
-
-app.get("/products", (req, res) => {
-  const usuarios = JSON.parse(
-    fs.readFileSync("./files/Usuarios.json", "utf-8")
-  );
-  const html = `<ul>${usuarios
+// Llamo a todos los productos
+app.get("/api/products", async (req, res) => {
+  const products = await productManager.getProducts()
+  const html = `<ul>${products
     .map(
-      (usuario) => `
-    <li>
-      <h2>${usuario.title}</h2>
-      <p>${usuario.description}</p>
-      <p>Precio: ${usuario.price}</p>
-      <p>Stock: ${usuario.stock}</p>
-    </li>`
+      (product) => `
+        <li>
+          <h2>${product.title}</h2>
+          <p>${product.description}</p>
+          <p>Precio: ${product.price}</p>
+          <p>Stock: ${product.stock}</p>
+        </li>`
     )
     .join("")}
-  </ul>`;
+    </ul>`;
   res.send(html);
 });
 
-
-//Llamo al producto según su ID
-
-app.get("/products/:id", (req, res) => {
-  const usuarios = JSON.parse(
-    fs.readFileSync("./files/Usuarios.json", "utf-8")
-  );
+// Llamo al producto según su ID
+app.get("/api/products/:id", async (req, res) => {
   const id = parseInt(req.params.id);
-  const usuario = usuarios.find((usuario) => usuario.id === id);
-  console.log(usuario)
-  if (usuario) {
+  const product = await productManager.getProductById(id);
+  
+  if (product) {
     const html = `
       <ul>
         <li>
-          <h2>${usuario.title}</h2>
-          <p>${usuario.description}</p>
-          <p>Precio: ${usuario.price}</p>
-          <p>Stock: ${usuario.stock}</p>
+          <h2>${product.title}</h2>
+          <p>${product.description}</p>
+          <p>Precio: ${product.price}</p>
+          <p>Stock: ${product.stock}</p>
         </li>
       </ul>
     `;
     res.send(html);
   } else {
     res.status(404).send('<h1 style="text-align:center;">El producto no existe</h1>');
-}
+  }
+});
+
+// Agregar nuevo producto
+app.post("/api/products", (req, res) => {
+  // Aquí puedes agregar la lógica para crear un nuevo producto
+});
+
+// Actualizar un producto existente
+app.put("/api/products/:id", (req, res) => {
+  // Aquí puedes agregar la lógica para actualizar un producto existente
+});
+
+// Eliminar un producto existente
+app.delete("/api/products/:id", (req, res) => {
+  // Aquí puedes agregar la lógica para eliminar un producto existente
 });
 
 app.listen(port, () => console.log(`Server Port: ${port}`));
