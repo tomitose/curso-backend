@@ -2,7 +2,7 @@ const fs = require("fs");
 const util = require("util");
 
 const writeFileAsync = util.promisify(fs.writeFile);
-const PATH = "./files/Usuarios.json";
+const PATH = "./data/Usuarios.json"
 
 class ProductManager {
   constructor() {
@@ -27,16 +27,19 @@ class ProductManager {
 
   // Agregar producto
   async addProduct(title, description, price, thumbnail, code, stock) {
-    if (!title || !description || !price || !thumbnail || !code || !stock) {
-      console.log("Falta agregar un campo");
-      return;
+    if (!title || !description || !price || !code || !stock) {
+      throw new Error("Falta agregar un campo");
     }
 
     if (this.products.some((product) => product.code === code)) {
       console.log("El código del producto ya existe");
     } else {
+      const existingProducts = await this.getProducts();
       const product = {
-        id: this.products.length + 1,
+        id:
+          existingProducts.length > 0
+            ? existingProducts[existingProducts.length - 1].id + 1
+            : 1,
         title,
         description,
         price,
@@ -44,14 +47,10 @@ class ProductManager {
         code,
         stock,
       };
-      this.products.push(product);
-      const data = { products: this.products };
+      existingProducts.push(product);
+      const data = { products: existingProducts };
       try {
-        await writeFileAsync(
-          this.path,
-          JSON.stringify(data.products),
-          "utf-8"
-        );
+        await writeFileAsync(this.path, JSON.stringify(data.products), "utf-8");
         console.log("Producto fue agregado correctamente");
       } catch (error) {
         console.log("Error al agregar producto:", error);
@@ -62,7 +61,7 @@ class ProductManager {
   // Obtener producto por ID
   async getProductById(id) {
     const products = await this.getProducts();
-    const product = products.find((product) => product.id === id);
+    const product = products.find((product) => product.id === parseInt(id));
     if (!product) {
       console.log("Producto no encontrado");
       return null;
@@ -75,20 +74,20 @@ class ProductManager {
   // Actualizar producto
   async updateProduct(id, newProductData) {
     const products = await this.getProducts();
-
-    const productIndex = products.findIndex((product) => product.id === id);
-
+  
+    const productIndex = products.findIndex((product) => product.id === parseInt(id));
+  
     if (productIndex === -1) {
-      console.log("Producto no encontrado");
-      return;
+      throw new Error("Producto no encontrado");
     }
-
+  
     const updatedProduct = {
       ...products[productIndex],
       ...newProductData,
     };
+  
     products[productIndex] = updatedProduct;
-
+  
     try {
       await writeFileAsync(this.path, JSON.stringify(products), "utf-8");
       console.log("Producto actualizado correctamente");
@@ -96,26 +95,33 @@ class ProductManager {
       console.log("Error al actualizar producto:", err);
     }
   }
-
+  
   // Eliminar producto
+ 
   async deleteProduct(id) {
     try {
-      const products = await this.getProducts();
-      const productIndex = products.findIndex((product) => product.id === id);
-
+      let products = await this.getProducts();
+      const productIndex = products.findIndex((product) => product.id === parseInt(id));
+  
       if (productIndex === -1) {
         console.log("Producto no encontrado");
-        return;
+        return null;
       }
-
+  
       products.splice(productIndex, 1);
-
-      await writeFileAsync(this.path, JSON.stringify(products), "utf-8");
+  
+      const data = { products };
+      await writeFileAsync(this.path, JSON.stringify(data.products), "utf-8");
       console.log("Producto eliminado correctamente");
+  
+      return products;
     } catch (error) {
       console.log("Error al eliminar producto:", error);
+      return null;
     }
   }
+  
+  
 
   // Inicialización: agregar productos
   async init() {
