@@ -2,7 +2,7 @@ const fs = require("fs");
 const util = require("util");
 
 const writeFileAsync = util.promisify(fs.writeFile);
-const PATH = "./data/Usuarios.json"
+const PATH = "./data/products.json"
 
 class ProductManager {
   constructor() {
