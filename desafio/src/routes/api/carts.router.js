@@ -8,13 +8,35 @@ const router = Router();
 
 // Ver los todos los productos del carrito
 router.get("/", async (req, res) => {
-    try {
-      const carts = await myCarts.getAllCarts();
-      res.send({ status: "Success", payload: carts });
-    } catch (error) {
-      res.status(500).send({ status: "Error", message: "Error al obtener los carritos" });
-    }
-  });
+  try {
+    const carts = await myCarts.getAllCarts();
+    const html = `<ul>${carts
+      .map(
+        (cart) => `
+          <li>
+            <h2>Carrito ID: ${cart.id}</h2>
+            <ul>
+              ${cart.products
+                .map(
+                  (product) => `
+                    <li>
+                      <h3>${product.id}</h3>
+                      <p>Cantidad: ${product.quantity}</p>
+                    </li>
+                  `
+                )
+                .join("")}
+            </ul>
+          </li>
+        `
+      )
+      .join("")}
+    </ul>`;
+    res.send(html);
+  } catch (error) {
+    res.status(500).send({ status: "Error", message: "Error al obtener los carritos" });
+  }
+});
 
 
 // Obtener productos de un carrito por ID
@@ -23,7 +45,26 @@ router.get("/:cid", async (req, res) => {
     const cartId = req.params.cid;
     const cart = await myCarts.getCartById(cartId);
     if (cart) {
-      res.send({ status: "Success", payload: cart.products });
+      const html = `
+        <ul>
+          <li>
+            <h2>Carrito ID: ${cart.id}</h2>
+            <ul>
+              ${cart.products
+                .map(
+                  (product) => `
+                    <li>
+                      <h3>${product.id}</h3>
+                      <p>Cantidad: ${product.quantity}</p>
+                    </li>
+                  `
+                )
+                .join("")}
+            </ul>
+          </li>
+        </ul>
+      `;
+    res.send(html);
     } else {
       res.status(404).send({ status: "Error", message: "Carrito no encontrado" });
     }
