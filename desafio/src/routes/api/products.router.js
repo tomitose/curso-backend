@@ -6,7 +6,7 @@ const router = Router();
 
 // Llamo a todos los productos
 
-router.get("/api/products", async (req, res) => {
+router.get("/", async (req, res) => {
   const products = await myProducts.getProducts();
   const html = `<ul>${products
     .map(
@@ -25,7 +25,7 @@ router.get("/api/products", async (req, res) => {
 
 
 // Llamo al producto según su ID
-router.get("/api/products/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   const id = parseInt(req.params.id);
   const product = await myProducts.getProductById(id);
 
@@ -50,7 +50,7 @@ router.get("/api/products/:id", async (req, res) => {
 
 
 // Agregar nuevo producto
-router.post("/api/products", async (req, res) => {
+router.post("/", async (req, res) => {
   const { title, description, price, thumbnail, code, stock } = req.body;
 
   try {
@@ -69,7 +69,7 @@ router.post("/api/products", async (req, res) => {
 });
 
 // Actualizar un producto existente
-router.put("/api/products/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const newProductData = req.body;
 
@@ -85,7 +85,7 @@ router.put("/api/products/:id", async (req, res) => {
 
 
 // Eliminar un producto existente
-router.delete("/api/products/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
