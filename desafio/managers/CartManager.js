@@ -2,7 +2,7 @@ const fs = require("fs");
 const util = require("util");
 
 const writeFileAsync = util.promisify(fs.writeFile);
-const PATH = "./data/cart.json";
+const PATH = "./data/carts.json";
 
 class CartManager {
   constructor() {
@@ -10,7 +10,7 @@ class CartManager {
     this.path = PATH;
   }
 
-  async getCart() {
+  async getAllCarts() {
     try {
       const data = await fs.promises.readFile(this.path, "utf-8");
       if (!data) {
@@ -54,23 +54,28 @@ class CartManager {
     }
   }
 
-  async getCartItemById(cartItemId) {
-    const cart = await this.getCart();
-    const cartItem = cart.find((item) => item.id === parseInt(cartItemId));
-    if (!cartItem) {
-      console.log("Elemento del carrito no encontrado");
+  async getCartById(cartId) {
+    try {
+      const carts = await this.getAllCarts();
+      const cart = carts.find((item) => item.id === parseInt(cartId));
+      if (!cart) {
+        console.log("Carrito no encontrado");
+        return null;
+      } else {
+        console.log(`El id del carrito es: ${cart.id}`);
+        return cart;
+      }
+    } catch (error) {
+      console.log("Error al obtener el carrito:", error);
       return null;
-    } else {
-      console.log(`El id del elemento del carrito es: ${cartItem.id}`);
-      return cartItem;
     }
   }
 
-  async updateCartItem(cartItemId, newQuantity) {
+  async updateCartItem(cartId, newQuantity) {
     const cart = await this.getCart();
 
     const cartItemIndex = cart.findIndex(
-      (item) => item.id === parseInt(cartItemId)
+      (item) => item.id === parseInt(cartId)
     );
 
     if (cartItemIndex === -1) {
@@ -92,11 +97,11 @@ class CartManager {
     }
   }
 
-  async removeCartItem(cartItemId) {
+  async removeCartItem(cartId) {
     try {
       let cart = await this.getCart();
       const cartItemIndex = cart.findIndex(
-        (item) => item.id === parseInt(cartItemId)
+        (item) => item.id === parseInt(cartId)
       );
 
       if (cartItemIndex === -1) {
@@ -117,17 +122,6 @@ class CartManager {
     }
   }
 
-  async init() {
-    const existingCart = await this.getCart();
-    if (existingCart.length === 0) {
-      // Agregar los elementos del carrito aquí si el archivo está vacío
-      this.addToCart(1, 2); // Ejemplo: Agregar el producto con ID 1 y cantidad 2 al carrito
-      this.addToCart(2, 1); // Ejemplo: Agregar el producto con ID 2 y cantidad 1 al carrito
-    } else {
-      // Mostrar los elementos del carrito existentes si el archivo ya los contiene
-      console.log("Elementos del carrito existentes:", existingCart);
-    }
-  }
 }
 
-module.exports = CartManager;
+module.exports = {CartManager}

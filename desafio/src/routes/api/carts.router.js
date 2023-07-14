@@ -16,15 +16,6 @@ router.get("/", async (req, res) => {
     }
   });
 
-// Crear un nuevo carrito
-router.post("/", async (req, res) => {
-  try {
-    const newCartId = await myCarts.createCart();
-    res.send({ status: "Success", message: "Carrito creado correctamente", cartId: newCartId });
-  } catch (error) {
-    res.status(500).send({ status: "Error", message: "No se pudo crear el carrito" });
-  }
-});
 
 // Obtener productos de un carrito por ID
 router.get("/:cid", async (req, res) => {
@@ -59,14 +50,14 @@ router.post("/:cid/product/:pid", async (req, res) => {
       return;
     }
 
-    const existingProduct = cart.products.find((p) => p.product === productId);
+    const existingProduct = cart.products.find((p) => p.id === productId); // Cambiar 'product' a 'id'
     if (existingProduct) {
       existingProduct.quantity += 1;
     } else {
-      cart.products.push({ product: productId, quantity: 1 });
+      cart.products.push({ id: productId, quantity: 1 }); // Cambiar 'product' a 'id'
     }
 
-    await myCarts.updateCart(cartId, cart);
+    await myCarts.updateCartItem(cartId, cart); // Cambiar 'updateCart' a 'updateCartItem'
 
     res.send({
       status: "Success",
@@ -76,5 +67,6 @@ router.post("/:cid/product/:pid", async (req, res) => {
     res.status(400).send({ status: "Error", message: error.message });
   }
 });
+
 
 module.exports = router;
