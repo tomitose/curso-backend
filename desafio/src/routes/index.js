@@ -5,7 +5,7 @@ const CartsRouter = require('./api/carts.router')
 // /api
 const router = Router()
 
-router.use('/products', ProductsRouter )
+router.use('/products', ProductsRouter)
 router.use('/carts', CartsRouter)
 
 

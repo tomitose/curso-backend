@@ -23,7 +23,6 @@ router.get("/", async (req, res) => {
   res.send(html);
 });
 
-
 // Llamo al producto según su ID
 router.get("/:id", async (req, res) => {
   const id = parseInt(req.params.id);
@@ -47,7 +46,6 @@ router.get("/:id", async (req, res) => {
       .send('<h1 style="text-align:center;">El producto no existe</h1>');
   }
 });
-
 
 // Agregar nuevo producto
 router.post("/", async (req, res) => {
@@ -82,7 +80,6 @@ router.put("/:id", async (req, res) => {
     res.status(400).send(error.message);
   }
 });
-
 
 // Eliminar un producto existente
 router.delete("/:id", async (req, res) => {
