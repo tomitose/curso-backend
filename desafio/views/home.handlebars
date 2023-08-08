@@ -1,0 +1,31 @@
+{{!-- <h1>Hola {{nombre}} !</h1>
+<div id="products">
+    {{#each products}}
+    <div>
+        <h1>Products:</h1>
+        <h2>{{this.titulo}}</h2>
+        <h4>Description: {{this.description}}</h4>  
+        <p>Price: ${{this.price}}</p>  
+        <p>Stock: {{this.stock}}</p>
+    </div>
+    {{/each}}
+</div> --}}
+
+
+{{#each products}}
+  <div id="productID-{{this.id}}">
+    <div class='uk-card uk-card-default'>
+      <div class='uk-card-media-top'>
+        <img alt='foto producto' />
+      </div>
+      <div class='uk-card-body'>
+        <h3 class='uk-card-title'>{{this.title}}</h3>
+        <h5>USD ${{this.price}}</h5>
+        <span class='uk-badge'>{{this.category}}</span>
+        <p>{{this.description}}</p>
+        <button class='uk-button uk-button-secondary uk-button-small'>Agregar al
+          carrito</button>
+      </div>
+    </div>
+  </div>
+{{/each}}
