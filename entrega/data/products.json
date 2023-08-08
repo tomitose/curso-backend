@@ -1,0 +1,79 @@
+[
+  {
+    "title": "The Witcher",
+    "description": "The witcher Wild Hunt",
+    "price": 30,
+    "code": "0001",
+    "stock": 60,
+    "status": true,
+    "category": "adventure",
+    "thumbnails": ["path-img1"],
+    "id": 1
+  },
+  {
+    "title": "Batman Arkham Knight",
+    "description": "Is an open world action-adventure video game developed by Rocksteady Studios.",
+    "price": 12,
+    "code": "0002",
+    "stock": 100,
+    "status": true,
+    "category": "action",
+    "thumbnails": ["path-img1"],
+    "id": 2
+  },
+  {
+    "title": "Counter-strike Global Offensive",
+    "description": "Counter-Strike: Global Offensive is a first-person shooter video game developed by Valve Corporation and Hidden Path Entertainment.",
+    "price": 20,
+    "code": "0003",
+    "stock": 25,
+    "status": true,
+    "category": "shooting",
+    "thumbnails": ["path-img1"],
+    "id": 3
+  },
+  {
+    "title": "The Legend of Zelda: Tears of the Kingdom",
+    "description": "The Legend of Zelda: Tears of the Kingdom is a 2023 action-adventure video game in The Legend of Zelda series.",
+    "price": 50,
+    "code": "0004",
+    "stock": 1000,
+    "status": true,
+    "category": "adventure",
+    "thumbnails": ["path-img1"],
+    "id": 4
+  },
+  {
+    "title": "Fall guys",
+    "description": "Fall Guys is a free-to-play battle royale and platform video game developed by Mediatonic. The video game involves up to 40 players who control jelly bean-like creatures",
+    "price": 8,
+    "code": "0005",
+    "stock": 2000,
+    "status": true,
+    "category": "adventure",
+    "thumbnails": ["path-img1"],
+    "id": 5
+  },
+  {
+    "title": "Call of Duty: Warzone",
+    "description": "Call of Duty: Warzone is a first-person shooter video game, belonging to the free-to-play battle royale genre.",
+    "price": 15,
+    "code": "0006",
+    "stock": 500,
+    "status": true,
+    "category": "armas",
+    "thumbnails": ["path-img1"],
+    "id": 6
+  },
+  {
+    "title": "Fortnite",
+    "description": "Fortnite is a 2017 video game developed by the company Epic Games released as different software packages that present different game modes.",
+    "price": 250,
+    "code": "0007",
+    "stock": 50,
+    "status": true,
+    "category": "navegacion",
+    "thumbnails": ["path-img1"],
+    "id": 7
+  }
+]
