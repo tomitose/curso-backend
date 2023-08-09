@@ -7,8 +7,7 @@
     "stock": 60,
     "status": true,
     "category": "adventure",
-    "thumbnails": ["path-img1"],
-    "id": 1
+    "thumbnails": ["path-img1"]
   },
   {
     "title": "Batman Arkham Knight",
@@ -18,8 +17,7 @@
     "stock": 100,
     "status": true,
     "category": "action",
-    "thumbnails": ["path-img1"],
-    "id": 2
+    "thumbnails": ["path-img1"]
   },
   {
     "title": "Counter-strike Global Offensive",
@@ -29,9 +27,7 @@
     "stock": 25,
     "status": true,
     "category": "shooting",
-    "thumbnails": ["path-img1"],
-    "id": 3
-  },
+    "thumbnails": ["path-img1"]  },
   {
     "title": "The Legend of Zelda: Tears of the Kingdom",
     "description": "The Legend of Zelda: Tears of the Kingdom is a 2023 action-adventure video game in The Legend of Zelda series.",
@@ -40,9 +36,7 @@
     "stock": 1000,
     "status": true,
     "category": "adventure",
-    "thumbnails": ["path-img1"],
-    "id": 4
-  },
+    "thumbnails": ["path-img1"]  },
   {
     "title": "Fall guys",
     "description": "Fall Guys is a free-to-play battle royale and platform video game developed by Mediatonic. The video game involves up to 40 players who control jelly bean-like creatures",
@@ -51,8 +45,7 @@
     "stock": 2000,
     "status": true,
     "category": "adventure",
-    "thumbnails": ["path-img1"],
-    "id": 5
+    "thumbnails": ["path-img1"]
   },
   {
     "title": "Call of Duty: Warzone",
@@ -62,9 +55,7 @@
     "stock": 500,
     "status": true,
     "category": "armas",
-    "thumbnails": ["path-img1"],
-    "id": 6
-  },
+    "thumbnails": ["path-img1"]  },
   {
     "title": "Fortnite",
     "description": "Fortnite is a 2017 video game developed by the company Epic Games released as different software packages that present different game modes.",
@@ -73,7 +64,5 @@
     "stock": 50,
     "status": true,
     "category": "navegacion",
-    "thumbnails": ["path-img1"],
-    "id": 7
-  }
+    "thumbnails": ["path-img1"]  }
 ]

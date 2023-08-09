@@ -15,7 +15,7 @@ app.use("/api", api);
 
 (async () => {  
   try {
-    const uri = `mongodb+srv://${process.env.USER_ATLAS}:${process.env.PASS_ATLAS}@cluster0.qjelxrd.mongodb.net/coderback?retryWrites=true&w=majority`;
+    const uri = `mongodb+srv://${process.env.USER_ATLAS}:${process.env.PASS_ATLAS}@cluster0.qjelxrd.mongodb.net/ecommerce?retryWrites=true&w=majority`;
     await mongoose.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
