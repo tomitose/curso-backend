@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = Router(); 
 const productManager = require("../../dao/product.manager");
+const productModel = require("../../dao/models/product.model");
 
 
 router.get("/", async (req, res) => {
@@ -32,13 +33,11 @@ router.get("/:pid", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  try {
-    const product = req.body;
-    const info = await productManager.addProduct(product);
-    res.send({ status: "success", productId: info._id });
-  } catch (e) {
-    res.status(500).send({ status: "Error, the product was not created" });
-  }
+  const {body} = req
+  const product = await productModel.create(body)
+  console.log(product)
+
+  res.status(201).send(product)
 });
 
 router.patch("/:pid", async (req, res) => {
