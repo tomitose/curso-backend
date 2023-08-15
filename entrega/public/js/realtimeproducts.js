@@ -1,4 +1,4 @@
-const socket = io() //lo cargo en un elementro script en el html
+const socket = io() 
 
 const formsContainer = document.getElementById('forms-container')
 const productsContainer = document.getElementById('products-container')
