@@ -1,11 +1,8 @@
 const { Router } = require("express");
 const { CartManager } = require("../../dao/managersFileSystem/cartManager");
-const {
-  ProductManager,
-} = require("../../dao/managersFileSystem/productManager");
-const { validationProductExistence } = require("../../middelwares/validations");
+const productManager = require('../../managers/product.manager')
+// const { validationProductExistence } = require("../../middelwares/validations");
 
-const myProducts = new ProductManager("products.json");
 const myCarts = new CartManager("carts.json");
 const router = Router(); 
 
@@ -13,7 +10,7 @@ const router = Router();
 router.post("/", async (req, res) => {
   try {
     const products = [];
-    await myCarts.addCart({ products });
+    await productManager.addCart({ products });
     res.send({ status: "Success, a new was created" });
   } catch (e) {
     res.status(500).send({ status: "Error, the cart was not created" });
@@ -30,10 +27,10 @@ router.get("/:cid", async (req, res) => {
   }
 });
 
-router.post("/:cid/product/:pid", async (req, res) => {
+router.post("/:cid/product/:id", async (req, res) => {
   try {
     const cartId = +req.params.cid;
-    const productId = +req.params.pid;
+    const productId = +req.params.id;
     myCarts.checkCartExistence(cartId); 
     myProducts.checkProductExistence(productId); 
     const wasProductAdded = myCarts.addProductToCart(cartId, productId);

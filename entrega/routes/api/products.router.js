@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router(); 
-const productManager = require("../../dao/product.manager");
-const productModel = require("../../dao/models/product.model");
+const productManager = require("../../managers/product.manager");
+const productModel = require("../../models/product.model");
 
 
 router.get("/", async (req, res) => {
@@ -22,9 +22,9 @@ router.get("/", async (req, res) => {
   return;
 });
 
-router.get("/:pid", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const id = req.params.pid;
+    const id = req.params.id;
     product = await productManager.getById(id);
     res.send({ status: "success", payload: product });
   } catch {
@@ -40,9 +40,9 @@ router.post("/", async (req, res) => {
   res.status(201).send(product)
 });
 
-router.patch("/:pid", async (req, res) => {
+router.patch("/:id", async (req, res) => {
   try {
-    const id = req.params.pid;
+    const id = req.params.id;
     const newPropiertiesValues = req.body;
     const productUpdated = await productManager.updateById(
       id,
@@ -54,9 +54,9 @@ router.patch("/:pid", async (req, res) => {
   }
 });
 
-router.delete("/:pid", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    const id = req.params.pid;
+    const id = req.params.id;
     const info = await productManager.deleteById(id);
     if (info.deletedCount === 1) {
       res.send({ status: `success, the product with id:${id} was deleted` });

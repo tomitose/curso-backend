@@ -42,7 +42,7 @@ socket.on('productAdded', (data) => {
 //socket escuchar evento de producto eliminado
 socket.on('productDeleted', (data) => {
   console.log(
-    'entre con productDeleted directo de  la ruta (DELETE)api/project/pid'
+    'entre con productDeleted directo de  la ruta (DELETE)api/project/id'
   )
   if (data.wasProductDeleted) {
     const productId = data.productDeletedId
@@ -110,9 +110,9 @@ buttonFormAdd.addEventListener('click', async (event) => {
 //funcion para controlar el envio del form de agregar producto
 buttonFormDel.addEventListener('click', async (event) => {
   
-  const pid = +formDel.elements['id'].value
+  const id = +formDel.elements['id'].value
   
-  const response = await fetch(`http://localhost:8080/${pid}`, {
+  const response = await fetch(`http://localhost:8080/${id}`, {
     method: 'DELETE'
   })
 

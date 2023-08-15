@@ -1,4 +1,5 @@
-const productModel = require("./models/product.model");
+const productModel = require("../models/product.model");
+
 class ProductManager {
   async addProduct(product) {
     return await productModel.create(product);
@@ -41,4 +42,4 @@ class ProductManager {
   }
 }
 
-module.exports = new ProductManager(); 
+module.exports = new ProductManager(); // singleton

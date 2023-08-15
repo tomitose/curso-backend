@@ -4,7 +4,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 
 
-const productModel = require("../dao/models/product.model");
+const productModel = require("../models/product.model");
 (async function seeder() {
   const filepath = path.join(__dirname, "../", "data", "products.json");
   const data = await fs.readFile(filepath, "utf-8");

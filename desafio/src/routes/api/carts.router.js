@@ -74,10 +74,10 @@ router.get("/:cid", async (req, res) => {
 });
 
 // Agregar un producto al carrito
-router.post("/:cid/product/:pid", async (req, res) => {
+router.post("/:cid/product/:id", async (req, res) => {
   try {
     const cartId = req.params.cid;
-    const productId = req.params.pid;
+    const productId = req.params.id;
 
     const cart = await myCarts.getCartById(cartId);
     if (!cart) {
