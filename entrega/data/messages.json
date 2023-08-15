@@ -1,0 +1,38 @@
+[
+    {
+      "user": "tomi@gmail.com",
+      "message":"hola"
+    },
+    {
+      "user": "fran@gmail.com",
+      "message":"hola tomi como estas?"
+    },
+    {
+      "user": "tomi@gmail.com",
+      "message":"todo bien vos que onda?"
+    },
+    {
+      "user": "fran@gmail.com",
+      "message":"todo bien que contas ?"
+    },
+    {
+      "user": "tomi@gmail.com",
+      "message":"Nada aca con mucho laburo vos ?"
+    },
+    {
+      "user": "jose@gmail.com",
+      "message":"Buenas ! como andan gente ?"
+    },
+    {
+      "user": "tomi@gmail.com",
+      "message":"hola jose como estas?"
+    },
+    {
+        "user": "fran@gmail.com",
+        "message":"hola jose que onda ?"
+    },
+    {
+        "user": "jose@gmail.com",
+        "message":"Bien acá con una mudanza ustedes que onda?"
+    }
+  ]
