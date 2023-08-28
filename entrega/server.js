@@ -5,6 +5,7 @@ const handlebars = require('express-handlebars')
 const { Server } = require('socket.io')
 const mongoose = require("mongoose");
 const express = require("express");
+const cookieParser = require('cookie-parser');
 const { api, home } = require("./routes/mainRoutes");
 
 const port = process.env.PORT || 8080;  
@@ -21,6 +22,7 @@ app.set('views', path.join(__dirname, '/views')) // el setting 'views' = directo
 app.set('view engine', 'handlebars') // setear handlebars como motor de plantillas
 
 
+
 //sirvo la carpeta public
 app.use('/static', express.static(path.join(__dirname + '/public')))
 
@@ -28,6 +30,15 @@ app.use('/static', express.static(path.join(__dirname + '/public')))
 //middelwares para dar formato
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); 
+app.use(cookieParser())
+
+// Cokies
+app.use((req,res,next)=>{
+
+  console.log(req.cookies)  
+  console.log(req.user)
+  next()
+})
 
 //inserto el io en la request.
 app.use((req, res, next) => {
