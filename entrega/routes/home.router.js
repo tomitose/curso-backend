@@ -127,37 +127,38 @@ router.post('/signup', async (req, res) => {
 
 router.get('/login', (_, res) => res.render('login'))
 router.post('/login', async (req, res) => {
-  const { email } = req.body
+  console.log(req.body);
+  const { email } = req.body;
 
   try {
-
-    const user = await userManager.getByEmail(email)
+    const user = await userManager.getByEmail(email);
 
     if (!user) {
-      return res.render('login', { error: 'El usuario no existe' })
+      return res.render('login', { error: 'El usuario no existe' });
     }
 
     req.session.user = {
       name: user.firstname,
       id: user._id,
-
       // role: 'Admin'
       ...user
-    }
+    };
 
     req.session.save((err) => {
-      if(!err) {
-        res.redirect('/')
+      if (err) {
+        console.error("Error al guardar la sesión:", err);
+        res.render('login', { error: 'Ha ocurrido un error' });
+      } else {
+        console.log("Redirigiendo a /");
+        res.redirect('/');
       }
-    })
+    });
   } catch(e) {
-    res.render('login', { error: 'Ha ocurrido un error' })
+    res.render('login', { error: 'Ha ocurrido un error' });
   }
 
-  // guardo la session con la informacion del usuario
-  
-})
-
+  // guardo la session con la información del usuario
+});
 
 router.get('/logout', isAuth, (req, res) => {
   const { user } = req.cookies

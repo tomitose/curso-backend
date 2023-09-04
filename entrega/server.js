@@ -27,17 +27,29 @@ app.set('view engine', 'handlebars') // setear handlebars como motor de plantill
 app.use('/static', express.static(path.join(__dirname + '/public')))
 
 
-//middelwares para dar formato
+// Middelwares para dar formato
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); 
-app.use(cookieParser())
+app.use(cookieParser());
 
-Cokies
-app.use((req,res,next)=>{
+// Cookies
+app.use((req, res, next) => {
+  // Configura una cookie llamada "miCookie" con un valor "miValor" (puedes personalizar los nombres y valores)
+  // res.cookie('miCookie', 'miValor', { /* opciones de configuración */ });
 
-  console.log(req.cookies)  
-  next()
-})
+  // Luego, puedes imprimir las cookies para verificar que se hayan configurado correctamente
+  // console.log(req.cookies);
+
+  if (req.session?.user) {
+    req.user = {
+      name: req.session.user.name,
+      role: "admin"
+    }
+  }
+
+  // Asegúrate de llamar a "next()" para continuar con el flujo de la solicitud
+  next();
+});
 
 //inserto el io en la request.
 app.use((req, res, next) => {
