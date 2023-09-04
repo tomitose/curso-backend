@@ -6,6 +6,7 @@ const { Server } = require('socket.io')
 const mongoose = require("mongoose");
 const express = require("express");
 const cookieParser = require('cookie-parser');
+const session = require('express-session')
 const { api, home } = require("./routes/mainRoutes");
 
 const port = process.env.PORT || 8080;  
@@ -30,14 +31,28 @@ app.use('/static', express.static(path.join(__dirname + '/public')))
 // Middelwares para dar formato
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); 
-app.use(cookieParser());
+app.use(cookieParser('secreto'));
+app.use(session({
+  secret: 'secreto',
+  resave: true,
+  saveUninitialized: true,
+  // store: MongoStore.create({
+  //   mongoUrl: 'mongodb+srv://back-ecommerce:tixhAsG7SzC4YAp8@cluster0.qjelxrd.mongodb.net/coderback?retryWrites=true&w=majority',
+  //   ttl: 60 * 60
+  // })
+}))
+
 
 // Cookies
 app.use((req, res, next) => {
   // res.cookie('miCookie', 'miValor', { /* opciones de configuración */ });
 
+  console.log(req.session)
   // console.log(req.cookies);
+  console.log(req.signedCookies)
   const {user} = req.cookies
+
+  console.log(req.session.user)
 
   // if (user) {
   //   req.user = {
@@ -46,17 +61,16 @@ app.use((req, res, next) => {
   //   }
   // }
 
-  // if (req.session?.user) {
-  //   req.user = {
-  //     name: req.session.user.name,
-  //     role: "admin"
-  //   }
-  // }
+  if (req.session?.user) {
+    req.user = {
+      name: req.session.user.name,
+      role: "admin"
+    }
+  }
 
-  // Asegúrate de llamar a "next()" para continuar con el flujo de la solicitud
+  // "next()" para continuar con el flujo de la solicitud
   next();
 });
-
 //inserto el io en la request.
 app.use((req, res, next) => {
   req.io = io

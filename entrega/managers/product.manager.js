@@ -20,6 +20,7 @@ class ProductManager {
     }
   }
 
+
   async getById(id) {
     try{
       return await productModel.findOne({ _id: id });

@@ -27,6 +27,9 @@ router.get('/', async(req, res) => {
   })
 
 
+  req.session.homeCount = (req.session.homeCount || 0) + 1
+
+
   res.render('products', {
     products,
     route: {
@@ -144,8 +147,10 @@ router.post('/signup', async (req, res) => {
 
 router.get('/login', (_, res) => res.render('login'))
 router.post('/login', async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { email } = req.body;
+
+  console.log(email)
 
   try {
     const user = await userManager.getByEmail(email);
@@ -154,12 +159,17 @@ router.post('/login', async (req, res) => {
       return res.render('login', { error: 'El usuario no existe' });
     }
 
+    console.log(user)
+
     req.session.user = {
       name: user.firstname,
       id: user._id,
       // role: 'Admin'
       ...user
     };
+
+    console.log(user)
+
 
     req.session.save((err) => {
       if (err) {
@@ -176,6 +186,7 @@ router.post('/login', async (req, res) => {
 
   // guardo la session con la información del usuario
 });
+
 
 router.get('/logout', isAuth, (req, res) => {
   const { user } = req.cookies
@@ -204,3 +215,4 @@ router.get('/logout', isAuth, (req, res) => {
 
 
 module.exports = router
+
