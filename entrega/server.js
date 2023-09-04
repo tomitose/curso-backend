@@ -34,18 +34,24 @@ app.use(cookieParser());
 
 // Cookies
 app.use((req, res, next) => {
-  // Configura una cookie llamada "miCookie" con un valor "miValor" (puedes personalizar los nombres y valores)
   // res.cookie('miCookie', 'miValor', { /* opciones de configuración */ });
 
-  // Luego, puedes imprimir las cookies para verificar que se hayan configurado correctamente
   // console.log(req.cookies);
+  const {user} = req.cookies
 
-  if (req.session?.user) {
-    req.user = {
-      name: req.session.user.name,
-      role: "admin"
-    }
-  }
+  // if (user) {
+  //   req.user = {
+  //     name: user,
+  //     role: "admin"
+  //   }
+  // }
+
+  // if (req.session?.user) {
+  //   req.user = {
+  //     name: req.session.user.name,
+  //     role: "admin"
+  //   }
+  // }
 
   // Asegúrate de llamar a "next()" para continuar con el flujo de la solicitud
   next();

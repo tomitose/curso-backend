@@ -85,6 +85,20 @@ router.get('/realtimeproducts', async (req, res) => {
 })
 
 
+// router.get('/carrito', (req, res) => {
+//   // res.sendFile(path.join(__dirname, '../public/carrito.html'))
+//   // interactuar con el manager de carrito
+//   res.render('carrito', {
+//     numItems: 2,
+//     title: 'Carrito',
+//     user: req.user ?  {
+//       ...req.user,
+//       isAdmin: req.user?.role == 'admin',
+//     } : null,
+//   })
+// })
+
+
 router.get('/signup', (_, res) => res.render('signup'))
 router.post('/signup', async (req, res) => {
   const user = req.body
@@ -102,6 +116,9 @@ router.post('/signup', async (req, res) => {
   // crear al usuario
   try {
     const newUser = await userManager.create(user)
+
+    console.log(newUser);
+
 
     req.session.user = {
       name: newUser.firstname,
@@ -162,6 +179,8 @@ router.post('/login', async (req, res) => {
 
 router.get('/logout', isAuth, (req, res) => {
   const { user } = req.cookies
+
+  console.log(user)
 
   // borrar la cookie
   res.clearCookie('user')
