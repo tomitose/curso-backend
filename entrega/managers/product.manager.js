@@ -20,6 +20,10 @@ class ProductManager {
     }
   }
 
+  getAllPaged(page = 1, limit = 5) {
+    return productModel.paginate({}, { limit, page, lean: true })
+  }
+
   async getById(id) {
     try{
       return await productModel.findOne({ _id: id });

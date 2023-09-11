@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 const { v4: uuid } = require("uuid");
+const paginate = require('mongoose-paginate-v2')
 
 
 const schema = new Schema(
@@ -23,5 +24,9 @@ const schema = new Schema(
   { timestamps: true }
 );
 
+schema.plugin(paginate);
+
+
 const productModel = model("products", schema);
+
 module.exports = productModel;

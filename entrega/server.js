@@ -5,8 +5,11 @@ const handlebars = require('express-handlebars')
 const { Server } = require('socket.io')
 const mongoose = require("mongoose");
 const express = require("express");
+const session = require('express-session')
+const MongoStore = require('connect-mongo')
 const cookieParser = require('cookie-parser');
-const { api, home } = require("./routes/mainRoutes");
+const fileStore = require('session-file-store')
+const Routes = require('./routes/index.js')
 
 const port = process.env.PORT || 8080;  
 
@@ -15,6 +18,7 @@ const socketManager = require('./websocket/index')
 const app = express();
 const server = http.createServer(app) // server http montado con express
 const io = new Server(server) // web socket montado en el http
+const Filestore = fileStore(session)
 
 //settings del motor de plantilla
 app.engine('handlebars', handlebars.engine()) // registramos handlebars como motor de plantillas
@@ -32,6 +36,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); 
 app.use(cookieParser());
 
+app.use(session({
+  secret: "secreto",
+  resave: true,  //--> para que la session no caduque con el tiempo.
+  saveUninitialized:true, //-> para que guarde el obj session aun cuando este este vacio
+  store: new Filestore({ path: './sessions', ttl: 100, retries: 0 })
+  // store: new MongoStore({
+  //   mongoUrl:`mongodb+srv://${process.env.USER_ATLAS}:${process.env.PASS_ATLAS}@cluster0.qjelxrd.mongodb.net/coderback?retryWrites=true&w=majority`,
+  //   ttl: 3600*24 ///-->tiempo en segundos que mongo guarda los datos. 
+  // })
+}))
+
+
+
 // Cookies
 app.use((req, res, next) => {
   // Configura una cookie llamada "miCookie" con un valor "miValor" (puedes personalizar los nombres y valores)
@@ -43,7 +60,7 @@ app.use((req, res, next) => {
   if (req.session?.user) {
     req.user = {
       name: req.session.user.name,
-      role: "admin"
+      //role: "admin"
     }
   }
 
@@ -51,17 +68,24 @@ app.use((req, res, next) => {
   next();
 });
 
-//inserto el io en la request.
-app.use((req, res, next) => {
-  req.io = io
-  next()
-})
+// //inserto el io en la request.
+// app.use((req, res, next) => {
+//   req.io = io
+//   next()
+// })
 
-//router de  api
-app.use("/api", api);
+// //router de  api
+// app.use("/api", api);
 
-//router del home
-app.use('/', home)
+// //router del home
+// app.use('/', home)
+
+  // router
+  app.use('/', Routes.home)
+  app.use('/api', (req, res, next) => {
+    req.io = io
+    next()
+  }, Routes.api)
 
 
 // web socket
