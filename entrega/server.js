@@ -8,7 +8,7 @@ const express = require("express");
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
 const cookieParser = require('cookie-parser');
-const fileStore = require('session-file-store')
+// const fileStore = require('session-file-store')
 const Routes = require('./routes/index.js')
 
 const port = process.env.PORT || 8080;  
@@ -18,7 +18,7 @@ const socketManager = require('./websocket/index')
 const app = express();
 const server = http.createServer(app) // server http montado con express
 const io = new Server(server) // web socket montado en el http
-const Filestore = fileStore(session)
+// const Filestore = fileStore(session)
 
 //settings del motor de plantilla
 app.engine('handlebars', handlebars.engine()) // registramos handlebars como motor de plantillas
@@ -40,11 +40,11 @@ app.use(session({
   secret: "secreto",
   resave: true,  //--> para que la session no caduque con el tiempo.
   saveUninitialized:true, //-> para que guarde el obj session aun cuando este este vacio
-  store: new Filestore({ path: './sessions', ttl: 100, retries: 0 })
-  // store: new MongoStore({
-  //   mongoUrl:`mongodb+srv://${process.env.USER_ATLAS}:${process.env.PASS_ATLAS}@cluster0.qjelxrd.mongodb.net/coderback?retryWrites=true&w=majority`,
-  //   ttl: 3600*24 ///-->tiempo en segundos que mongo guarda los datos. 
-  // })
+  // store: new Filestore({ path: './sessions', ttl: 100, retries: 0 })
+  store: new MongoStore({
+    mongoUrl:`mongodb+srv://${process.env.USER_ATLAS}:${process.env.PASS_ATLAS}@cluster0.qjelxrd.mongodb.net/ecommerce?retryWrites=true&w=majority`,
+    ttl: 3600*24 ///-->tiempo en segundos que mongo guarda los datos. 
+  })
 }))
 
 
