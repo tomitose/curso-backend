@@ -39,6 +39,20 @@ router.get("/login", (_, res) => res.render("login"));
 
 
 
+router.get('/carrito', (req, res) => {
+  // res.sendFile(path.join(__dirname, '../public/carrito.html'))
+  // interactuar con el manager de carrito
+  res.render('carrito', {
+    numItems: 2,
+    title: 'Carrito',
+    user: req.user ?  {
+      ...req.user,
+      isAdmin: req.user?.role == 'admin',
+    } : null,
+  })
+})
+
+
 router.get("/chat", async (req, res) => {
   res.render("chat", {
     route: {
@@ -82,6 +96,22 @@ router.get("/realtimeproducts", async (req, res) => {
     },
   });
 });
+
+
+
+
+//sing-up (Get)
+router.get('/signup', async (req, res) => {
+  res.render('signup', {
+    route: {
+      hasCSS: true,
+      cssFile: 'signup.css',
+      hasSocket: true,
+      hasJsFile: false,
+      jsFile: null,
+    },
+  })
+})
 
 
 router.get('/profile', isAuth, (req, res) => {

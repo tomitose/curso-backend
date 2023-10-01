@@ -81,8 +81,9 @@ app.use((req, res, next) => {
 // app.use('/', home)
 
   // router
-  app.use('/', Routes.home)
-  app.use('/api', (req, res, next) => {
+  app.use('/', Routes.home) // van a levantar vistas
+
+  app.use('/api', (req, res, next) => {  // y estas le pegan a la base de datos 
     req.io = io
     next()
   }, Routes.api)

@@ -5,14 +5,39 @@ const userManager = require("../../managers/user.manager");
 const router = Router()
 
 router.get("/signup", (_, res) => res.render("signup"));
+router.get('/login', (_, res) => res.render('login'))
+
+
+router.get("/logout", isAuth, (req, res) => {
+  const { user } = req.cookies;
+
+  // borrar la cookie
+  res.clearCookie("user");
+
+  req.session.destroy((err) => {
+    if (err) {
+      return res.redirect("/error");
+    }
+
+    res.render("logout", {
+      user: req.user.name,
+    });
+
+    req.user = null;
+  });
+
+  // res.render('logout', {
+  //   user
+  // })
+});
 
 router.post("/signup", async (req, res) => {
   const user = req.body;
 
   console.log(user);
-
+  
   const existing = await userManager.getByEmail(user.email);
-
+  
   if (existing) {
     return res.render("signup", {
       error: "El email ya existe",
@@ -41,7 +66,6 @@ router.post("/signup", async (req, res) => {
     });
   }
 });
-
 
 
 router.post("/login", async (req, res) => {
@@ -83,27 +107,5 @@ router.post("/login", async (req, res) => {
   // guardo la session con la información del usuario
 });
 
-router.get("/logout", isAuth, (req, res) => {
-  const { user } = req.cookies;
-
-  // borrar la cookie
-  res.clearCookie("user");
-
-  req.session.destroy((err) => {
-    if (err) {
-      return res.redirect("/error");
-    }
-
-    res.render("logout", {
-      user: req.user.name,
-    });
-
-    req.user = null;
-  });
-
-  // res.render('logout', {
-  //   user
-  // })
-});
 
 module.exports = router
